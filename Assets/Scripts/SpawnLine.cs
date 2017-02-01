@@ -23,10 +23,10 @@ public class SpawnLine : MonoBehaviour
         }
     }
 
-
     IEnumerator DrawLineSegment()
     {
-        GameObject segmentParent = Instantiate<GameObject>(new GameObject("Line Segmnet"));
+        GameObject segmentParent = new GameObject("LineSegment");
+        segmentParent.AddComponent<EmptyParent>();
         GameObject lastNode = null;
 
         while(m_controller.triggerPressed)
@@ -38,14 +38,13 @@ public class SpawnLine : MonoBehaviour
             g.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
             if (lastNode != null)
             {
-                //lastNode.GetComponent<LineRenderer>().SetPositions(new Vector3[]{lastNode.transform.position, g.transform.position });
                 lastNode.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
             }
             lastNode = g;
             yield return null;
         }
 
-        m_drawing = true;
+        m_drawing = false;
     }
 
 }
