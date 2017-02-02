@@ -25,7 +25,9 @@ public class Lifetime : MonoBehaviour
         {
             GetComponent<Rigidbody>().useGravity = true;
             GetComponent<Collider>().enabled = true;
-            timer = m_lifespan / 2;   
+            timer = m_lifespan / 2;
+            if (GetComponent<LineRenderer>() != null)
+                GetComponent<LineRenderer>().enabled = false;
         }
 
         while (timer < m_lifespan && m_drop)

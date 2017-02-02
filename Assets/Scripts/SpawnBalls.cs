@@ -12,6 +12,7 @@ public class SpawnBalls : MonoBehaviour
     [SerializeField] GameObject m_storedPrefab3;
     [SerializeField] GameObject m_storedPrefab4;
     [SerializeField] GameObject m_storedPrefab5;
+    [SerializeField] GameObject m_storedPrefab6;
 
     private void Start()
     {
@@ -46,6 +47,9 @@ public class SpawnBalls : MonoBehaviour
                 break;
             case 5:
                 m_BallPrefab = m_storedPrefab5;
+                break;
+            case 6:
+                m_BallPrefab = m_storedPrefab6;
                 break;
             default:
                 break;
