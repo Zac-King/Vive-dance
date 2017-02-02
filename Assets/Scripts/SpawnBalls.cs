@@ -3,13 +3,15 @@ using System.Collections;
 
 public class SpawnBalls : MonoBehaviour
 {
+    private SteamVR_TrackedController thisController;
+    private bool touchingball = false;
+
     [SerializeField] GameObject m_BallPrefab;
     [SerializeField] GameObject m_storedPrefab1;
     [SerializeField] GameObject m_storedPrefab2;
     [SerializeField] GameObject m_storedPrefab3;
-
-    private SteamVR_TrackedController thisController;
-    private bool touchingball = false;
+    [SerializeField] GameObject m_storedPrefab4;
+    [SerializeField] GameObject m_storedPrefab5;
 
     private void Start()
     {
@@ -38,6 +40,12 @@ public class SpawnBalls : MonoBehaviour
                 break;
             case 3:
                 m_BallPrefab = m_storedPrefab3;
+                break;
+            case 4:
+                m_BallPrefab = m_storedPrefab4;
+                break;
+            case 5:
+                m_BallPrefab = m_storedPrefab5;
                 break;
             default:
                 break;
