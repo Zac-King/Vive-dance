@@ -3,6 +3,9 @@ using System.Collections;
 
 public class SpawnBalls : MonoBehaviour
 {
+    //test
+    [SerializeField] CountNodes m_nodeCount;
+
     private SteamVR_TrackedController thisController;
     private bool touchingball = false;
 
@@ -25,7 +28,7 @@ public class SpawnBalls : MonoBehaviour
         {
             GameObject g = Instantiate(m_BallPrefab);
             g.transform.position = transform.position;
-
+            m_nodeCount.AddNode();
         }
 	}
 

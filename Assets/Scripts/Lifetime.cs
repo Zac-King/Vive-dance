@@ -36,7 +36,7 @@ public class Lifetime : MonoBehaviour
             yield return null;
         }
 
-
+        FindObjectOfType<CountNodes>().RemoveNode();
         Destroy(gameObject);
     }
 }
