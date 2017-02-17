@@ -5,6 +5,8 @@ public class Lifetime : MonoBehaviour
 {
     [SerializeField] float m_lifespan;
     [SerializeField] bool m_drop = true;
+    [SerializeField] private bool m_deflate;
+    [SerializeField] private float m_rate;
 
     private void Awake()
     {
@@ -36,7 +38,24 @@ public class Lifetime : MonoBehaviour
             yield return null;
         }
 
-        FindObjectOfType<CountNodes>().RemoveNode();
+        //FindObjectOfType<CountNodes>().RemoveNode();
+        if (!m_deflate)
+            Destroy(gameObject);
+        else
+            StartCoroutine(Deflate());
+    }
+
+    public IEnumerator Deflate()
+    {
+        float oriScale = transform.localScale.x;
+        //LineRenderer lr = GetComponent<LineRenderer>();
+
+        while (oriScale > 0)
+        {
+            oriScale -= m_rate * Time.deltaTime;
+            transform.localScale = (Vector3.one * oriScale);
+            yield return null;
+        }
         Destroy(gameObject);
     }
 }

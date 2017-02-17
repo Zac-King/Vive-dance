@@ -3,11 +3,13 @@ using System.Collections;
 
 public class SpawnLine : MonoBehaviour
 {
-    [SerializeField]
-    GameObject m_nodePrefab;
+    [SerializeField] GameObject m_nodePrefab;
+
     private GameObject m_lineParent;
+    private GameObject m_lastNode;  
     private SteamVR_TrackedController m_controller;
     private bool m_drawing = false;
+    
 
     private void Start()
     {
@@ -23,6 +25,17 @@ public class SpawnLine : MonoBehaviour
         }
     }
 
+    private GameObject MakeNewNode(GameObject a_parent)
+    {
+        GameObject g = Instantiate<GameObject>(m_nodePrefab);
+        g.transform.position = transform.position;
+        g.transform.parent = a_parent.transform;
+        g.GetComponent<LineRenderer>().SetPosition(0, g.transform.position);
+        g.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
+
+        return g;
+    }
+
     IEnumerator DrawLineSegment()
     {
         GameObject segmentParent = new GameObject("LineSegment");
@@ -31,14 +44,11 @@ public class SpawnLine : MonoBehaviour
 
         while(m_controller.triggerPressed)
         {
-            GameObject g = Instantiate<GameObject>(m_nodePrefab);
-            g.transform.position = transform.position;
-            g.transform.parent = segmentParent.transform;
-            g.GetComponent<LineRenderer>().SetPosition(0, g.transform.position);
-            g.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
+            GameObject g = MakeNewNode(segmentParent);
             if (lastNode != null)
             {
                 lastNode.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
+                g.GetComponent<LineNode>().SetLastNode(lastNode);
             }
             lastNode = g;
             yield return null;
