@@ -47,13 +47,15 @@ public class Lifetime : MonoBehaviour
 
     public IEnumerator Deflate()
     {
-        float oriScale = transform.localScale.x;
-        //LineRenderer lr = GetComponent<LineRenderer>();
+        float scale = transform.localScale.x;
+        //LineNode ln = GetComponent<LineNode>();
 
-        while (oriScale > 0)
+        while (scale > 0)
         {
-            oriScale -= m_rate * Time.deltaTime;
-            transform.localScale = (Vector3.one * oriScale);
+            scale -= m_rate * Time.deltaTime;
+            transform.localScale = (Vector3.one * scale);
+
+            //ln.UpdateWidth();
             yield return null;
         }
         Destroy(gameObject);

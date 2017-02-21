@@ -4,12 +4,15 @@ using System.Collections;
 public class SpawnLine : MonoBehaviour
 {
     [SerializeField] GameObject m_nodePrefab;
-
+    [SerializeField] GameObject m_camRig;
+    [SerializeField] GameObject m_trail;
     private GameObject m_lineParent;
     private GameObject m_lastNode;  
     private SteamVR_TrackedController m_controller;
     private bool m_drawing = false;
-    
+
+    // Test //
+    [SerializeField] GameObject m_lineManager;
 
     private void Start()
     {
@@ -21,7 +24,8 @@ public class SpawnLine : MonoBehaviour
         if(m_controller.triggerPressed && !m_drawing)
         {
             m_drawing = true;
-            StartCoroutine(DrawLineSegment());
+            //StartCoroutine(DrawLineSegment());
+            StartCoroutine(DrawNewLine());
         }
     }
 
@@ -39,6 +43,7 @@ public class SpawnLine : MonoBehaviour
     IEnumerator DrawLineSegment()
     {
         GameObject segmentParent = new GameObject("LineSegment");
+        segmentParent.transform.parent = m_camRig.transform;
         segmentParent.AddComponent<EmptyParent>();
         GameObject lastNode = null;
 
@@ -51,10 +56,29 @@ public class SpawnLine : MonoBehaviour
                 g.GetComponent<LineNode>().SetLastNode(lastNode);
             }
             lastNode = g;
+
+            GameObject g2 = Instantiate<GameObject>(m_trail);
+            g2.transform.position = transform.position;
+            //g2.GetComponent<LineRenderer>().SetPosition(0, g.transform.position);
+            //g2.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
+
+
             yield return null;
         }
 
         m_drawing = false;
     }
 
+    IEnumerator DrawNewLine()
+    {
+        GameObject segmentParent = Instantiate<GameObject>(m_lineManager);
+        LineManager lm = segmentParent.GetComponent<LineManager>();
+
+        while (m_controller.triggerPressed)
+        {
+            lm.AddLineNode(transform.position);
+            yield return null;
+        }
+        m_drawing = false;
+    }
 }
