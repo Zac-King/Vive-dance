@@ -72,11 +72,14 @@ public class SpawnLine : MonoBehaviour
     IEnumerator DrawNewLine()
     {
         GameObject segmentParent = Instantiate<GameObject>(m_lineManager);
+        segmentParent.transform.parent = m_camRig.transform;
+        segmentParent.transform.localPosition = Vector3.zero;
+        segmentParent.transform.localScale = Vector3.one;
         LineManager lm = segmentParent.GetComponent<LineManager>();
 
         while (m_controller.triggerPressed)
         {
-            lm.AddLineNode(transform.position);
+            lm.AddLineNode(transform.localPosition - transform.parent.transform.localPosition);
             yield return null;
         }
         m_drawing = false;
