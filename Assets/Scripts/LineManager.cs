@@ -8,6 +8,7 @@ public class LineManager : MonoBehaviour
     [SerializeField] List<Vector3> m_line = new List<Vector3>();
     [SerializeField] int m_maxLineSize = 0;
     [SerializeField] float m_delayToLetGo = 0;
+    [SerializeField] bool m_letGo = true;
 
     private float m_timer;
     private LineRenderer m_lineRend;
@@ -16,7 +17,9 @@ public class LineManager : MonoBehaviour
     {
         m_lineRend = GetComponent<LineRenderer>();
         m_timer = m_delayToLetGo;
-        StartCoroutine(LetGoLine());
+
+        if (m_letGo)
+            StartCoroutine(LetGoLine());
     }
 
     public void AddLineNode(Vector3 a_pos)
