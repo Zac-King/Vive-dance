@@ -12,8 +12,16 @@ public class PlayMaze : MonoBehaviour
     {
         if(Input.GetKeyUp(KeyCode.Space))
         {
+            m_anim.Stop();
             m_anim.Play();
+
             m_audio.Play();
+
+            LineManager [] pw = GameObject.FindObjectsOfType<LineManager>();
+            foreach(LineManager p in pw)
+            {
+                Destroy(p.gameObject);
+            }
         }
 		
 	}

@@ -15,12 +15,11 @@ public class PaintWalls : MonoBehaviour
 
     private void Update()
     {
-        if (m_controller.padPressed && !m_painting)
+        if (m_controller.triggerPressed && !m_painting)
         {
             m_painting = true;
             StartCoroutine(PaintWallLine());
-        }
-            
+        } 
     }
 
     IEnumerator PaintWallLine()
@@ -29,11 +28,11 @@ public class PaintWalls : MonoBehaviour
         segmentParent.transform.localScale = Vector3.one;
         LineManager lm = segmentParent.GetComponent<LineManager>();
 
-        while (m_controller.padPressed)
+        while (m_controller.triggerPressed)
         {
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 11))
+            if (Physics.Raycast(transform.position, transform.forward, out hit))
             {
                 lm.AddLineNode(hit.point);
             }
