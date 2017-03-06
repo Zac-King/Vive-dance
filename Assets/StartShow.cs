@@ -5,6 +5,7 @@ using UnityEngine;
 public class StartShow : MonoBehaviour
 {
     Animator m_anim;
+    bool paused = false;
 
 	// Use this for initialization
 	void Start ()
@@ -18,6 +19,25 @@ public class StartShow : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space))
         {
             m_anim.SetTrigger("Play");
+
+            LineManager[] pw = GameObject.FindObjectsOfType<LineManager>();
+            foreach (LineManager p in pw)
+            {
+                Destroy(p.gameObject);
+            }
         }
+
+        if (Input.GetKeyUp(KeyCode.P))
+        {
+            if (paused)
+                m_anim.speed = 1;
+
+            else
+                m_anim.speed = 0;
+
+            paused = !paused;
+        }
+
+
     }
 }
