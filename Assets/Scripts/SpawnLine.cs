@@ -3,9 +3,9 @@ using System.Collections;
 
 public class SpawnLine : MonoBehaviour
 {
-    [SerializeField] GameObject m_nodePrefab;
+    //[SerializeField] GameObject m_nodePrefab;
     [SerializeField] GameObject m_camRig;
-    [SerializeField] GameObject m_trail;
+    //[SerializeField] GameObject m_trail;
     private GameObject m_lineParent;
     private GameObject m_lastNode;  
     private SteamVR_TrackedController m_controller;
@@ -29,45 +29,45 @@ public class SpawnLine : MonoBehaviour
         }
     }
 
-    private GameObject MakeNewNode(GameObject a_parent)
-    {
-        GameObject g = Instantiate<GameObject>(m_nodePrefab);
-        g.transform.position = transform.position;
-        g.transform.parent = a_parent.transform;
-        g.GetComponent<LineRenderer>().SetPosition(0, g.transform.position);
-        g.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
+    //private GameObject MakeNewNode(GameObject a_parent)
+    //{
+    //    GameObject g = Instantiate<GameObject>(m_nodePrefab);
+    //    g.transform.position = transform.position;
+    //    g.transform.parent = a_parent.transform;
+    //    g.GetComponent<LineRenderer>().SetPosition(0, g.transform.position);
+    //    g.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
 
-        return g;
-    }
+    //    return g;
+    //}
 
-    IEnumerator DrawLineSegment()
-    {
-        GameObject segmentParent = new GameObject("LineSegment");
-        segmentParent.transform.parent = m_camRig.transform;
-        segmentParent.AddComponent<EmptyParent>();
-        GameObject lastNode = null;
+    //IEnumerator DrawLineSegment()
+    //{
+    //    GameObject segmentParent = new GameObject("LineSegment");
+    //    segmentParent.transform.parent = m_camRig.transform;
+    //    segmentParent.AddComponent<EmptyParent>();
+    //    GameObject lastNode = null;
 
-        while(m_controller.triggerPressed)
-        {
-            GameObject g = MakeNewNode(segmentParent);
-            if (lastNode != null)
-            {
-                lastNode.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
-                g.GetComponent<LineNode>().SetLastNode(lastNode);
-            }
-            lastNode = g;
+    //    while(m_controller.triggerPressed)
+    //    {
+    //        GameObject g = MakeNewNode(segmentParent);
+    //        if (lastNode != null)
+    //        {
+    //            lastNode.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
+    //            g.GetComponent<LineNode>().SetLastNode(lastNode);
+    //        }
+    //        lastNode = g;
 
-            GameObject g2 = Instantiate<GameObject>(m_trail);
-            g2.transform.position = transform.position;
-            //g2.GetComponent<LineRenderer>().SetPosition(0, g.transform.position);
-            //g2.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
+    //        GameObject g2 = Instantiate<GameObject>(m_trail);
+    //        g2.transform.position = transform.position;
+    //        //g2.GetComponent<LineRenderer>().SetPosition(0, g.transform.position);
+    //        //g2.GetComponent<LineRenderer>().SetPosition(1, g.transform.position);
 
 
-            yield return null;
-        }
+    //        yield return null;
+    //    }
 
-        m_drawing = false;
-    }
+    //    m_drawing = false;
+    //}
 
     IEnumerator DrawNewLine()
     {
@@ -77,9 +77,18 @@ public class SpawnLine : MonoBehaviour
         segmentParent.transform.localScale = Vector3.one;
         LineManager lm = segmentParent.GetComponent<LineManager>();
 
+        bool worldspace = segmentParent.GetComponent<LineRenderer>().useWorldSpace;
+
         while (m_controller.triggerPressed)
         {
-            lm.AddLineNode(transform.localPosition - transform.parent.transform.localPosition);
+            // World space
+            if(worldspace)
+                lm.AddLineNode(transform.position);
+            
+            //local space
+            else
+                lm.AddLineNode(transform.localPosition - transform.parent.transform.localPosition);
+
             yield return null;
         }
         m_drawing = false;

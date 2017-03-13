@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class PlayMaze : MonoBehaviour
 {
-
     [SerializeField] Animation m_anim;
     [SerializeField] AudioSource m_audio;
-
-
-
 
 	// Update is called once per frame
 	void Update ()
